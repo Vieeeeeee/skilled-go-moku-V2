@@ -1,0 +1,5 @@
+{
+  "name": "Skilled Go-moku",
+  "description": "A classic Go-moku (Five-in-a-Row) game based on a 15x15 board. This initial version features core gameplay mechanics allowing a player to compete against a basic AI opponent.",
+  "requestFramePermissions": []
+}
