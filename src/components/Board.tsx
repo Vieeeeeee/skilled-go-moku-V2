@@ -179,20 +179,20 @@ const Board: React.FC<BoardProps> = ({
             border: '3px solid #A0826D',
             boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.1)'
           }}>
-            {/* Background Image */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ 
-                backgroundImage: 'url(/assets/张呈.png)',
-                backgroundPosition: 'center 20%',
-                opacity: 0.6,
-                backgroundColor: '#F5E6D3'
-              }}
-            ></div>
-            
+            {/* Background Illustration */}
+            <div className="flipped-board-background" aria-hidden="true"></div>
+
+            {/* Avatar spotlight */}
+            <div className="flipped-avatar-overlay" aria-hidden="true">
+              <div className="flipped-avatar-frame">
+                <div className="flipped-avatar-glow"></div>
+                <div className="flipped-avatar-image"></div>
+              </div>
+            </div>
+
             {/* Overlay for contrast */}
             <div className="absolute inset-0" style={{
-              background: 'rgba(245, 230, 211, 0.3)'
+              background: 'rgba(245, 230, 211, 0.28)'
             }}></div>
           </div>
           
