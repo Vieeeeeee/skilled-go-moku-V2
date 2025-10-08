@@ -36,20 +36,9 @@ const Board: React.FC<BoardProps> = ({
   const gridInsetPercent = 9;
   const gridInset = `${gridInsetPercent}%`;
   const cellSizePercent = 100 / (BOARD_SIZE - 1);
-  const hitBoxPercent = cellSizePercent * 0.95;
-  const pieceSizePercent = cellSizePercent * 0.72;
-  const starPointSizePercent = Math.min(cellSizePercent * 0.36, 2.2);
-  const starPointCoords: Move[] = [];
-
-  if (BOARD_SIZE >= 11) {
-    const anchors = [3, Math.floor(BOARD_SIZE / 2), BOARD_SIZE - 4];
-    anchors.forEach(row => {
-      anchors.forEach(col => {
-        starPointCoords.push({ row, col });
-      });
-    });
-  }
-
+  const hitBoxPercent = cellSizePercent * 1.05;
+  const pieceSizePercent = cellSizePercent * 0.88;
+  const pieceSize = `clamp(18px, ${pieceSizePercent}%, 36px)`;
   const frameStyle: React.CSSProperties = {
     background: '#E8D4B8',
     border: '8px solid #8B6F47',
@@ -102,18 +91,6 @@ const Board: React.FC<BoardProps> = ({
     inset: gridInset,
     zIndex: 10,
   };
-
-  const starPointStyle = (row: number, col: number): React.CSSProperties => ({
-    position: 'absolute',
-    top: `${row * cellSizePercent}%`,
-    left: `${col * cellSizePercent}%`,
-    width: `${starPointSizePercent}%`,
-    height: `${starPointSizePercent}%`,
-    transform: 'translate(-50%, -50%)',
-    borderRadius: '9999px',
-    backgroundColor: '#8B6F47',
-    opacity: 0.8,
-  });
 
   const getCellPositionStyle = (row: number, col: number): React.CSSProperties => ({
     position: 'absolute',
@@ -194,8 +171,8 @@ const Board: React.FC<BoardProps> = ({
                     ${isCelebrating ? 'victory-piece-highlight' : ''}
                   `}
                   style={{
-                    width: `${pieceSizePercent}%`,
-                    height: `${pieceSizePercent}%`,
+                    width: pieceSize,
+                    height: pieceSize,
                     boxShadow:
                       cell === Player.Human
                         ? '0 4px 8px rgba(0,0,0,0.6), inset 2px 2px 4px rgba(255,255,255,0.2), inset -2px -2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.4)'
@@ -217,8 +194,8 @@ const Board: React.FC<BoardProps> = ({
                     previewPlayer === Player.Human ? 'bg-black' : 'bg-white'
                   }`}
                   style={{
-                    width: `${pieceSizePercent}%`,
-                    height: `${pieceSizePercent}%`,
+                    width: pieceSize,
+                    height: pieceSize,
                     boxShadow:
                       previewPlayer === Player.Human
                         ? '0 0 8px rgba(0,0,0,0.75)'
@@ -261,11 +238,7 @@ const Board: React.FC<BoardProps> = ({
               ></div>
             </>
           )}
-          <div style={gridStyle}>
-            {starPointCoords.map(point => (
-              <div key={`${point.row}-${point.col}`} style={starPointStyle(point.row, point.col)}></div>
-            ))}
-          </div>
+          <div style={gridStyle}></div>
           {renderPieces(face)}
         </div>
       </div>
