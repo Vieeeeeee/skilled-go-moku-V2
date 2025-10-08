@@ -39,7 +39,7 @@ const withBasePath = (relativePath: string) => {
 };
 
 const getSkillVideoPath = (skillId: SkillId): string | null => {
-    const videoMap: Record<SkillId, string> = {
+    const videoMap: Partial<Record<SkillId, string>> = {
       'remove': withBasePath('skill/飞沙走石.mp4'),
       'skip': withBasePath('skill/静如止水.mp4'),
       'swap': withBasePath('skill/两极反转 1.mp4'),
@@ -48,7 +48,7 @@ const getSkillVideoPath = (skillId: SkillId): string | null => {
       'qinNa': withBasePath('skill/擒拿 2.mp4'),
       'cleaning': withBasePath('skill/我是保洁.mp4'),
     };
-    return videoMap[skillId] || null;
+    return videoMap[skillId] ?? null;
 };
 
 const playHeiSound = () => {
@@ -1156,7 +1156,7 @@ const App: React.FC = () => {
               autoPlay
               onEnded={() => setProcessVideo(null)}
               className="h-auto"
-              style={{ width: '25vw', maxWidth: '400px', minWidth: '300px' }}
+              style={{ width: 'min(25vw, 360px)', maxWidth: '360px', minWidth: '220px' }}
             />
             <button
               onClick={() => setProcessVideo(null)}

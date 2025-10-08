@@ -18,6 +18,7 @@
 .flex-grow { flex-grow: 1; }
 .flex-shrink-0 { flex-shrink: 0; }
 
+.min-h-screen { min-height: 100vh; }
 .w-full { width: 100%; }
 .h-full { height: 100%; }
 .h-auto { height: auto; }
@@ -37,6 +38,7 @@
 .md\:h-\[calc\(100\%-2\.5rem\)\] { height: calc(100% - 2.5rem); }
 .max-w-xl { max-width: 36rem; }
 .max-w-7xl { max-width: 80rem; }
+.aspect-square { aspect-ratio: 1 / 1; }
 .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
 
 .p-1 { padding: 0.25rem; }
@@ -96,6 +98,7 @@
 .text-glow-sky { text-shadow: 0 0 8px rgba(56, 189, 248, 0.7); }
 .text-glow-red { text-shadow: 0 0 8px rgba(239, 68, 68, 0.7); }
 
+.bg-transparent { background-color: transparent; }
 .bg-black { background-color: #000; }
 .bg-white { background-color: #fff; }
 .bg-black\/40 { background-color: rgba(0,0,0,0.4); }
@@ -104,8 +107,12 @@
 .bg-amber-500 { background-color: #f59e0b; }
 .bg-blue-500\/30 { background-color: rgba(59,130,246,0.3); }
 .bg-red-500\/30 { background-color: rgba(239,68,68,0.3); }
+.bg-red-600 { background-color: #dc2626; }
 .bg-red-600\/90 { background-color: rgba(220,38,38,0.9); }
+.bg-green-600 { background-color: #16a34a; }
+.bg-gray-600 { background-color: #4b5563; }
 .bg-slate-800\/50 { background-color: rgba(30,41,59,0.5); }
+.bg-slate-800\/70 { background-color: rgba(30,41,59,0.7); }
 .bg-slate-800\/80 { background-color: rgba(30,41,59,0.8); }
 .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
 .from-amber-600 { --tw-gradient-stops: #d97706, var(--tw-gradient-to, rgba(217,119,6,0)); }
@@ -155,6 +162,7 @@
 .overflow-y-auto { overflow-y: auto; }
 .opacity-70 { opacity: 0.7; }
 
+.z-5 { z-index: 5; }
 .z-10 { z-index: 10; }
 .z-20 { z-index: 20; }
 .z-40 { z-index: 40; }
@@ -187,6 +195,10 @@
 .bg-cover { background-size: cover; }
 
 .backdrop-blur-sm { backdrop-filter: blur(4px); }
+
+.cursor-pointer { cursor: pointer; }
+.cursor-not-allowed { cursor: not-allowed; }
+.cursor-crosshair { cursor: crosshair; }
 
 .hover\:bg-red-500:hover { background-color: #ef4444; }
 .hover\:bg-slate-700:hover { background-color: #334155; }
