@@ -108,6 +108,15 @@
     transform-style: preserve-3d;
     transition: none;
   }
+  .board-container {
+    width: min(92vw, 92vh, 640px);
+    height: min(92vw, 92vh, 640px);
+    max-width: 100%;
+    max-height: min(80vh, 640px);
+    min-width: 260px;
+    min-height: 260px;
+    margin: 0 auto;
+  }
   .flipper.is-animating {
     transition: transform 1.2s;
   }
@@ -465,8 +474,9 @@
     z-index: 1;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
   }
   .header-corner {
     position: absolute;
@@ -1721,30 +1731,43 @@
   }
 
   /* Skill Video Positioning - Desktop */
-  .skill-video-ultimate {
-    inset: 0;
+  .skill-video-container {
+    position: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0.75rem;
+    z-index: 40;
+    pointer-events: none;
+  }
+
+  .skill-video-container > div {
+    pointer-events: auto;
+    max-width: min(90vw, 640px);
+  }
+
+  .skill-video-ultimate {
+    inset: 0;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(8px);
+    pointer-events: auto;
   }
-  
+
   .skill-video-normal {
     bottom: 2.5rem;
     right: 2.5rem;
+    left: auto;
+    top: auto;
   }
-  
+
   .skill-video-player {
-    width: 40vw;
-    max-width: 800px;
-    min-width: 500px;
+    width: clamp(260px, 40vw, 520px);
+    max-height: 60vh;
   }
-  
+
   .skill-video-ultimate .skill-video-player {
-    width: 50vw;
-    max-width: 960px;
-    min-width: 600px;
+    width: clamp(320px, 55vw, 720px);
+    max-height: 70vh;
   }
 
   /* Mobile Touch Optimization */
@@ -1877,34 +1900,38 @@
     }
     
     /* Optimize video players for mobile - always bottom small window */
+    .skill-video-container {
+      padding: 0.5rem !important;
+    }
+
     .skill-video-ultimate,
     .skill-video-normal {
-      bottom: 5rem !important;
-      left: 50% !important;
-      transform: translateX(-50%) !important;
-      right: auto !important;
+      top: auto !important;
       inset: auto !important;
-      background: transparent !important;
-      backdrop-filter: none !important;
+      bottom: 4.5rem !important;
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%) !important;
+      background: rgba(15, 23, 42, 0.4) !important;
+      backdrop-filter: blur(4px) !important;
     }
-    
-    .skill-video-player {
-      width: 70vw !important;
-      max-width: 70vw !important;
-      min-width: 0 !important;
-      max-height: 30vh !important;
+
+    .skill-video-container > div {
+      width: min(86vw, 360px) !important;
     }
-    
+
+    .skill-video-player,
     .skill-video-ultimate .skill-video-player {
-      width: 70vw !important;
-      max-width: 70vw !important;
+      width: 100% !important;
+      max-width: none !important;
       min-width: 0 !important;
-      max-height: 30vh !important;
+      max-height: 32vh !important;
     }
-    
+
     .process-video-container video {
-      max-width: 90vw !important;
-      max-height: 30vh !important;
+      width: min(70vw, 320px) !important;
+      max-width: none !important;
+      max-height: 28vh !important;
     }
     
     .victory-video-player,
