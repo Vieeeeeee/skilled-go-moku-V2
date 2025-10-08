@@ -1,0 +1,29 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hairGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4b5563" />
+      <stop offset="100%" stop-color="#1f2937" />
+    </linearGradient>
+    <linearGradient id="skinGradient" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#f4d0b0" />
+      <stop offset="100%" stop-color="#e0a97a" />
+    </linearGradient>
+    <linearGradient id="robeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#9333ea" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="rgba(15,23,42,0.4)" />
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="#0f172a" />
+  <g filter="url(#shadow)">
+    <path d="M256 96c-64 0-108 52-108 124 0 64 44 116 108 116s108-52 108-116c0-72-44-124-108-124z" fill="url(#hairGradient)" />
+    <path d="M256 120c-54 0-82 45-82 101 0 56 28 101 82 101s82-45 82-101c0-56-28-101-82-101z" fill="url(#skinGradient)" />
+    <path d="M256 272c-88 0-152 64-152 156v24h304v-24c0-92-64-156-152-156z" fill="url(#robeGradient)" />
+    <path d="M256 272c-32 0-72 16-72 40 0 24 40 48 72 48s72-24 72-48c0-24-40-40-72-40z" fill="#1e1b4b" opacity="0.35" />
+  </g>
+  <circle cx="218" cy="216" r="18" fill="#1f2937" />
+  <circle cx="294" cy="216" r="18" fill="#1f2937" />
+  <path d="M224 272c12 12 32 20 32 20s20-8 32-20" stroke="#9f1239" stroke-width="12" stroke-linecap="round" fill="none" />
+</svg>
