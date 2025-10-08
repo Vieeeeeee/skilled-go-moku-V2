@@ -29,28 +29,34 @@ const getAudioContext = () => {
   return audioCtx;
 };
 
+const withBasePath = (relativePath: string) => {
+  const base = import.meta.env.BASE_URL ?? '/';
+  const normalizedBase = base.endsWith('/') ? base : `${base}/`;
+  return `${normalizedBase}${relativePath.replace(/^\//, '')}`;
+};
+
 const getSkillVideoPath = (skillId: SkillId): string | null => {
     const videoMap: Record<SkillId, string> = {
-      'remove': '/skill/飞沙走石.mp4',
-      'skip': '/skill/静如止水.mp4',
-      'swap': '/skill/两极反转 1.mp4',
-      'overwhelm': '/skill/力拔山兮.mp4',
-      'tiaoChengLiShan': '/skill/调呈离山.mp4',
-      'qinNa': '/skill/擒拿 2.mp4',
-      'cleaning': '/skill/我是保洁.mp4',
+      'remove': withBasePath('skill/飞沙走石.mp4'),
+      'skip': withBasePath('skill/静如止水.mp4'),
+      'swap': withBasePath('skill/两极反转 1.mp4'),
+      'overwhelm': withBasePath('skill/力拔山兮.mp4'),
+      'tiaoChengLiShan': withBasePath('skill/调呈离山.mp4'),
+      'qinNa': withBasePath('skill/擒拿 2.mp4'),
+      'cleaning': withBasePath('skill/我是保洁.mp4'),
     };
     return videoMap[skillId] || null;
 };
 
 const playHeiSound = () => {
     const heiSounds = [
-      '/hei/嘿 1.mp3',
-      '/hei/嘿 2.mp3',
-      '/hei/嘿 3.mp3',
-      '/hei/嘿 4.mp3',
-      '/hei/嘿 5.mp3',
-      '/hei/嘿 6.mp3',
-      '/hei/嘿 7.mp3',
+      withBasePath('hei/嘿 1.mp3'),
+      withBasePath('hei/嘿 2.mp3'),
+      withBasePath('hei/嘿 3.mp3'),
+      withBasePath('hei/嘿 4.mp3'),
+      withBasePath('hei/嘿 5.mp3'),
+      withBasePath('hei/嘿 6.mp3'),
+      withBasePath('hei/嘿 7.mp3'),
     ];
     
     const randomSound = heiSounds[Math.floor(Math.random() * heiSounds.length)];
@@ -229,7 +235,7 @@ const App: React.FC = () => {
 
   // Initialize background music
   useEffect(() => {
-    audioRef.current = new Audio('/assets/技能五子棋.mp3');
+    audioRef.current = new Audio(withBasePath('assets/技能五子棋.mp3'));
     audioRef.current.loop = true;
     audioRef.current.volume = 0.3;
     
@@ -457,7 +463,7 @@ const App: React.FC = () => {
                 setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 2500);
                 // Play player victory animation
                 setTimeout(() => {
-                  setVictoryVideo('/guocheng/玩家胜利结算动画.mp4');
+                  setVictoryVideo(withBasePath('guocheng/玩家胜利结算动画.mp4'));
                 }, 800);
             } else if (aiWinLine) { 
                 setGameStatus(GameStatus.AIWin); setWinnerCells(aiWinLine); 
@@ -465,7 +471,7 @@ const App: React.FC = () => {
                 setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 1500);
                 // Play AI victory animation
                 setTimeout(() => {
-                  setVictoryVideo('/guocheng/ai 胜利结算动画.mp4');
+                  setVictoryVideo(withBasePath('guocheng/ai 胜利结算动画.mp4'));
                 }, 800);
             } else if (checkDraw(newBoard)) { 
                 setGameStatus(GameStatus.Draw); 
@@ -593,7 +599,7 @@ const App: React.FC = () => {
       
       // Play ultimate skill video (center screen for ultimate)
       setTimeout(() => {
-        setSkillVideo('/guocheng/终极奥义：积分+999 .mp4');
+        setSkillVideo(withBasePath('guocheng/终极奥义：积分+999 .mp4'));
       }, 500);
       
       setSkillToAnimate(null);
@@ -611,7 +617,7 @@ const App: React.FC = () => {
       
       // 1/3 probability to queue process animation after skill video ends
       if (Math.random() < 1/3) {
-        pendingProcessVideo.current = '/guocheng/玩家使用技能后随机出现，三分之一概率.mp4';
+        pendingProcessVideo.current = withBasePath('guocheng/玩家使用技能后随机出现，三分之一概率.mp4');
       }
     }
     
@@ -654,7 +660,7 @@ const App: React.FC = () => {
         setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 2500);
         // Play player victory animation
         setTimeout(() => {
-          setVictoryVideo('/guocheng/玩家胜利结算动画.mp4');
+          setVictoryVideo(withBasePath('guocheng/玩家胜利结算动画.mp4'));
         }, 800);
         return; 
     }
@@ -671,7 +677,7 @@ const App: React.FC = () => {
     
     // 1/10 probability to play good move animation
     if (Math.random() < 0.1) {
-      setProcessVideo('/guocheng/玩家下出好棋随机出现，十分之一概率.mp4');
+      setProcessVideo(withBasePath('guocheng/玩家下出好棋随机出现，十分之一概率.mp4'));
     }
     
     if (skipAiTurn) {
@@ -741,7 +747,7 @@ const App: React.FC = () => {
             setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 1500);
             // Play AI victory animation
             setTimeout(() => {
-              setVictoryVideo('/guocheng/ai 胜利结算动画.mp4');
+              setVictoryVideo(withBasePath('guocheng/ai 胜利结算动画.mp4'));
             }, 800);
             return;
         }
@@ -819,7 +825,7 @@ const App: React.FC = () => {
             setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 1500);
             // Play AI victory animation
             setTimeout(() => {
-              setVictoryVideo('/guocheng/ai 胜利结算动画.mp4');
+              setVictoryVideo(withBasePath('guocheng/ai 胜利结算动画.mp4'));
             }, 800);
         } else if (checkDraw(newBoard)) {
             setGameStatus(GameStatus.Draw); 
@@ -931,7 +937,7 @@ const App: React.FC = () => {
         setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 2500);
         // Play player victory animation
         setTimeout(() => {
-          setVictoryVideo('/guocheng/玩家胜利结算动画.mp4');
+          setVictoryVideo(withBasePath('guocheng/玩家胜利结算动画.mp4'));
         }, 800);
         return;
       } else if (aiWinLine) { 
@@ -940,7 +946,7 @@ const App: React.FC = () => {
         setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 1500);
         // Play AI victory animation
         setTimeout(() => {
-          setProcessVideo('/guocheng/ai 胜利结算动画.mp4');
+          setProcessVideo(withBasePath('guocheng/ai 胜利结算动画.mp4'));
         }, 800);
         return;
       } else if (checkDraw(boardAfterSkill)) {
@@ -971,7 +977,7 @@ const App: React.FC = () => {
             setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 1500);
             // Play AI victory animation
             setTimeout(() => {
-              setVictoryVideo('/guocheng/ai 胜利结算动画.mp4');
+              setVictoryVideo(withBasePath('guocheng/ai 胜利结算动画.mp4'));
             }, 800);
             return; 
         }
@@ -1097,7 +1103,7 @@ const App: React.FC = () => {
                 // Play pending process video or victory video after skill video ends
                 if (pendingProcessVideo.current === 'VICTORY_ANIMATION') {
                   pendingProcessVideo.current = null;
-                  setVictoryVideo('/guocheng/玩家胜利结算动画.mp4');
+                  setVictoryVideo(withBasePath('guocheng/玩家胜利结算动画.mp4'));
                 } else if (pendingProcessVideo.current) {
                   setProcessVideo(pendingProcessVideo.current);
                   pendingProcessVideo.current = null;
