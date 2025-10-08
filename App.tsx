@@ -10,6 +10,9 @@ import { ZHANG_CHENG_BG } from './assets';
 type Commentary = { id: number; speaker: string; message: string; isNew: boolean };
 type Danmaku = Commentary & { top: number; duration: number };
 type Particle = { id: number; left: number; duration: number; delay: number };
+type VictoryCelebration =
+  | { type: 'player' }
+  | { type: 'ai'; src: string };
 
 const skills: Skill[] = [
   { id: 'remove', name: '飞沙走石', cost: 3, description: "移除棋盘上对手的一枚棋子。" },
@@ -186,7 +189,7 @@ const App: React.FC = () => {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [skillVideo, setSkillVideo] = useState<string | null>(null);
   const [processVideo, setProcessVideo] = useState<string | null>(null);
-  const [victoryVideo, setVictoryVideo] = useState<string | null>(null);
+  const [victoryCelebration, setVictoryCelebration] = useState<VictoryCelebration | null>(null);
   const pendingProcessVideo = useRef<string | null>(null);
   
   const commentIdCounter = useRef(0);
@@ -238,7 +241,7 @@ const App: React.FC = () => {
     audioRef.current = new Audio(withBasePath('assets/技能五子棋.mp3'));
     audioRef.current.loop = true;
     audioRef.current.volume = 0.3;
-    
+
     // Auto play on mount
     audioRef.current.play().then(() => {
       // Successfully started playing
@@ -247,7 +250,7 @@ const App: React.FC = () => {
       console.log('Auto-play prevented by browser, user interaction needed:', err);
       setIsMusicPlaying(false);
     });
-    
+
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -255,6 +258,13 @@ const App: React.FC = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (victoryCelebration?.type === 'player') {
+      const timeout = setTimeout(() => setVictoryCelebration(null), 12000);
+      return () => clearTimeout(timeout);
+    }
+  }, [victoryCelebration]);
 
   // Toggle background music
   const toggleMusic = useCallback(() => {
@@ -463,7 +473,7 @@ const App: React.FC = () => {
                 setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 2500);
                 // Play player victory animation
                 setTimeout(() => {
-                  setVictoryVideo(withBasePath('guocheng/玩家胜利结算动画.mp4'));
+                  setVictoryCelebration({ type: 'player' });
                 }, 800);
             } else if (aiWinLine) { 
                 setGameStatus(GameStatus.AIWin); setWinnerCells(aiWinLine); 
@@ -471,7 +481,10 @@ const App: React.FC = () => {
                 setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 1500);
                 // Play AI victory animation
                 setTimeout(() => {
-                  setVictoryVideo(withBasePath('guocheng/ai 胜利结算动画.mp4'));
+                  setVictoryCelebration({
+                    type: 'ai',
+                    src: withBasePath('guocheng/ai 胜利结算动画.mp4'),
+                  });
                 }, 800);
             } else if (checkDraw(newBoard)) { 
                 setGameStatus(GameStatus.Draw); 
@@ -660,7 +673,7 @@ const App: React.FC = () => {
         setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 2500);
         // Play player victory animation
         setTimeout(() => {
-          setVictoryVideo(withBasePath('guocheng/玩家胜利结算动画.mp4'));
+          setVictoryCelebration({ type: 'player' });
         }, 800);
         return; 
     }
@@ -747,7 +760,10 @@ const App: React.FC = () => {
             setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 1500);
             // Play AI victory animation
             setTimeout(() => {
-              setVictoryVideo(withBasePath('guocheng/ai 胜利结算动画.mp4'));
+              setVictoryCelebration({
+                type: 'ai',
+                src: withBasePath('guocheng/ai 胜利结算动画.mp4'),
+              });
             }, 800);
             return;
         }
@@ -825,7 +841,10 @@ const App: React.FC = () => {
             setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 1500);
             // Play AI victory animation
             setTimeout(() => {
-              setVictoryVideo(withBasePath('guocheng/ai 胜利结算动画.mp4'));
+              setVictoryCelebration({
+                type: 'ai',
+                src: withBasePath('guocheng/ai 胜利结算动画.mp4'),
+              });
             }, 800);
         } else if (checkDraw(newBoard)) {
             setGameStatus(GameStatus.Draw); 
@@ -937,7 +956,7 @@ const App: React.FC = () => {
         setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 2500);
         // Play player victory animation
         setTimeout(() => {
-          setVictoryVideo(withBasePath('guocheng/玩家胜利结算动画.mp4'));
+          setVictoryCelebration({ type: 'player' });
         }, 800);
         return;
       } else if (aiWinLine) { 
@@ -977,7 +996,10 @@ const App: React.FC = () => {
             setTimeout(() => addNewCommentary('张技能五', dialogue.postGameDialogue.getLine()), 1500);
             // Play AI victory animation
             setTimeout(() => {
-              setVictoryVideo(withBasePath('guocheng/ai 胜利结算动画.mp4'));
+              setVictoryCelebration({
+                type: 'ai',
+                src: withBasePath('guocheng/ai 胜利结算动画.mp4'),
+              });
             }, 800);
             return; 
         }
@@ -1103,7 +1125,7 @@ const App: React.FC = () => {
                 // Play pending process video or victory video after skill video ends
                 if (pendingProcessVideo.current === 'VICTORY_ANIMATION') {
                   pendingProcessVideo.current = null;
-                  setVictoryVideo(withBasePath('guocheng/玩家胜利结算动画.mp4'));
+                  setVictoryCelebration({ type: 'player' });
                 } else if (pendingProcessVideo.current) {
                   setProcessVideo(pendingProcessVideo.current);
                   pendingProcessVideo.current = null;
@@ -1147,27 +1169,38 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Victory Video Player - Center (1/2 size) */}
-      {victoryVideo && (
+      {/* Victory Celebration Overlay */}
+      {victoryCelebration && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm victory-video-overlay">
           <div className="relative flex flex-col items-center gap-6">
-            <video
-              src={victoryVideo}
-              autoPlay
-              onEnded={() => setVictoryVideo(null)}
-              className="rounded-xl shadow-2xl"
-              style={{ width: '50vw', maxWidth: '960px', minWidth: '600px' }}
-            />
+            {victoryCelebration.type === 'ai' ? (
+              <video
+                src={victoryCelebration.src}
+                autoPlay
+                onEnded={() => setVictoryCelebration(null)}
+                className="rounded-xl shadow-2xl victory-video-player"
+              />
+            ) : (
+              <div className="victory-celebration">
+                <div className="victory-celebration-glow" />
+                <div className="victory-celebration-rings" />
+                <div className="victory-celebration-title">玩家大获全胜！</div>
+                <div className="victory-celebration-subtitle">
+                  张技能五震惊之余，表示要加倍练习！
+                </div>
+                <div className="victory-celebration-badge">棋盘主宰</div>
+              </div>
+            )}
             <button
-              onClick={() => setVictoryVideo(null)}
+              onClick={() => setVictoryCelebration(null)}
               className="absolute top-4 right-4 w-12 h-12 bg-red-600/90 hover:bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-2xl transition-all duration-200 hover:scale-110 shadow-lg z-10"
               title="关闭视频"
             >
               ✕
             </button>
-            
+
             {/* Victory Scroll Text - Only for Player Victory */}
-            {victoryVideo.includes('玩家胜利') && (
+            {victoryCelebration.type === 'player' && (
               <div className="victory-scroll-container">
                 <div className="victory-scroll-text">
                   外练筋骨皮，练的是体魄。内练五子棋，练的是快乐！　　　　　外练筋骨皮，练的是体魄。内练五子棋，练的是快乐！　　　　　外练筋骨皮，练的是体魄。内练五子棋，练的是快乐！
