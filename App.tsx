@@ -187,6 +187,7 @@ const App: React.FC = () => {
   const commentaryLock = useRef(false);
   const [danmakuList, setDanmakuList] = useState<Danmaku[]>([]);
   const aiMoveAfterAnimation = useRef<(() => void) | null>(null);
+  const swapResetTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
   const addNewCommentary = useCallback((speaker: string, message: string) => {
@@ -305,6 +306,26 @@ const App: React.FC = () => {
     }
   }, [gameStatus]);
   
+  useEffect(() => {
+    return () => {
+      if (swapResetTimeout.current) {
+        clearTimeout(swapResetTimeout.current);
+      }
+    };
+  }, []);
+
+  const scheduleSwapReset = useCallback(() => {
+    if (swapResetTimeout.current) {
+      clearTimeout(swapResetTimeout.current);
+    }
+
+    swapResetTimeout.current = setTimeout(() => {
+      setIsBoardFlipped(false);
+      setUseSpecialBg(false);
+      swapResetTimeout.current = null;
+    }, 400);
+  }, []);
+
   const handleRestart = useCallback(() => {
     setBoard(createEmptyBoard());
     setCurrentPlayer(Player.Human);
@@ -322,6 +343,10 @@ const App: React.FC = () => {
     setIsBoardFlipped(false);
     setToastMessage('');
     setIsCelebrating(false);
+    if (swapResetTimeout.current) {
+      clearTimeout(swapResetTimeout.current);
+      swapResetTimeout.current = null;
+    }
     commentaryLock.current = false;
     aiMoveAfterAnimation.current = null;
     runOpeningDialogue();
@@ -399,14 +424,14 @@ const App: React.FC = () => {
 
         if (skill.id === 'swap') {
           if (isFlipping) return;
-          
+
           setIsFlipping(true);
           setIsBoardFlipped(true);
           setUseSpecialBg(true);
           setToastMessage("技能发动：两极反转！乾坤已变！");
 
           setTimeout(() => {
-            const newBoard = board.map(row => 
+            const newBoard = board.map(row =>
               row.map(cell => {
                 if (cell === Player.Human) return Player.AI;
                 if (cell === Player.AI) return Player.Human;
@@ -416,6 +441,7 @@ const App: React.FC = () => {
             setBoard(newBoard);
             // Animation complete, allow interaction but keep board flipped
             setIsFlipping(false);
+            scheduleSwapReset();
 
             let humanWinLine: Move[] | null = null, aiWinLine: Move[] | null = null;
             for (let r = 0; r < BOARD_SIZE; r++) { for (let c = 0; c < BOARD_SIZE; c++) {
@@ -526,7 +552,7 @@ const App: React.FC = () => {
             }, piecesToRemove.length * 600 + 1200);
           }, 200); // Small delay after full-screen effect
         }
-    }, [addSkillCommentary, addNewCommentary, board, isFlipping]);
+    }, [addSkillCommentary, addNewCommentary, board, isFlipping, scheduleSwapReset]);
 
   const handleActivateSkill = (skillId: SkillId) => {
     const skill = skills.find(s => s.id === skillId);
@@ -849,7 +875,10 @@ const App: React.FC = () => {
               cell === Player.Human ? Player.AI : cell === Player.AI ? Player.Human : Player.None
             ));
             // Animation will complete after 1.2s
-            setTimeout(() => setIsFlipping(false), 1200);
+            setTimeout(() => {
+              setIsFlipping(false);
+              scheduleSwapReset();
+            }, 1200);
             break;
 
           case 'skip':
@@ -972,7 +1001,7 @@ const App: React.FC = () => {
     } else {
       setTimeout(() => executeMove(board, null), 1000);
     }
-  }, [board, gameStatus, aiScore, addNewCommentary, tryAddMidGameCommentary, addSkillCommentary]);
+  }, [board, gameStatus, aiScore, addNewCommentary, tryAddMidGameCommentary, addSkillCommentary, scheduleSwapReset]);
 
   const onAISkillAnimationComplete = useCallback(() => {
     if (aiMoveAfterAnimation.current) {
