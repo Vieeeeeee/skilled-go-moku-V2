@@ -20,6 +20,10 @@
 }
 </script>
 <style>
+  :root {
+    --app-gradient: linear-gradient(135deg, #1a237e 0%, #283593 25%, #1a237e 50%, #0d47a1 75%, #1a237e 100%);
+  }
+
   /* Mobile Optimization - Global */
   * {
     -webkit-tap-highlight-color: transparent;
@@ -32,6 +36,10 @@
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     touch-action: manipulation;
+    min-height: 100%;
+    background: var(--app-gradient);
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
   }
   
   body {
@@ -55,11 +63,11 @@
       height: 100%;
       overflow: hidden;
       /* Ensure background is visible on mobile */
-      background: linear-gradient(135deg, #1a237e 0%, #283593 25%, #1a237e 50%, #0d47a1 75%, #1a237e 100%) !important;
+      background: var(--app-gradient) !important;
       background-size: 400% 400% !important;
       animation: gradient-shift 15s ease infinite !important;
     }
-    
+
     #root {
       height: 100vh;
       overflow-y: auto;
@@ -1804,7 +1812,7 @@
 </style>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="text-white font-sans" style="background: linear-gradient(135deg, #1a237e 0%, #283593 25%, #1a237e 50%, #0d47a1 75%, #1a237e 100%); background-size: 400% 400%; animation: gradient-shift 15s ease infinite;">
+  <body class="text-white font-sans" style="background: var(--app-gradient); background-size: 400% 400%; animation: gradient-shift 15s ease infinite;">
   <style>
     @keyframes gradient-shift {
       0% { background-position: 0% 50%; }
