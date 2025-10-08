@@ -245,16 +245,18 @@ const Board: React.FC<BoardProps> = ({
               <div
                 className="absolute inset-0 bg-cover bg-center"
                 style={{
-                  backgroundImage: 'url(/assets/张呈.png)',
-                  backgroundPosition: 'center 20%',
-                  opacity: 0.6,
-                  filter: 'saturate(0.9)',
+                  backgroundImage: 'url(/assets/player-avatar.svg)',
+                  backgroundPosition: 'center 25%',
+                  opacity: 0.85,
+                  filter: 'drop-shadow(0 12px 24px rgba(15,23,42,0.45)) saturate(1.1)',
+                  mixBlendMode: 'multiply',
                 }}
               ></div>
               <div
                 className="absolute inset-0"
                 style={{
-                  background: 'rgba(245, 230, 211, 0.4)',
+                  background:
+                    'radial-gradient(circle at 50% 30%, rgba(255,255,255,0.55), rgba(245,230,211,0.3) 55%, rgba(148,116,84,0.45) 100%)',
                 }}
               ></div>
             </>

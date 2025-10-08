@@ -1065,7 +1065,7 @@ const App: React.FC = () => {
   };
   
   const getSkillButtonClass = (skill: Skill) => {
-    const baseClass = "w-full text-left p-2.5 rounded-lg transition-all duration-200 shadow-md border-b-4 relative overflow-hidden";
+    const baseClass = "w-full text-left p-2.5 rounded-lg transition-all duration-200 shadow-md border-b-4 relative overflow-hidden skill-card";
     const disabledClass = "bg-slate-600 border-slate-700 text-slate-400 cursor-not-allowed opacity-60";
     const activeClass = "bg-amber-500 border-amber-700 text-black transform scale-105 shadow-lg ring-2 ring-white";
     const hoverClass = "hover:bg-sky-600 hover:border-sky-800 hover:scale-105";
@@ -1293,11 +1293,11 @@ const App: React.FC = () => {
                       disabled={humanScore < skill.cost || !!skillToAnimate || !!aiSkillToAnimate}
                       className={getSkillButtonClass(skill) + ' mobile-skill-btn'}
                   >
-                      <div className="flex justify-between items-baseline relative z-10">
-                         <span className="font-bold text-sm md:text-base">⚡ {skill.name}</span>
-                         <span className="font-semibold text-xs bg-black/40 px-1.5 md:px-2 py-0.5 rounded border border-amber-400/50">消耗 {skill.cost}</span>
+                      <div className="skill-header flex justify-between items-baseline relative z-10">
+                         <span className="skill-name">⚡ {skill.name}</span>
+                         <span className="skill-cost">消耗 {skill.cost}</span>
                       </div>
-                      <p className="text-xs text-slate-200 mt-0.5 md:mt-1 relative z-10 leading-tight">{skill.description}</p>
+                      <p className="skill-description text-xs text-slate-200 mt-0.5 md:mt-1 relative z-10 leading-tight">{skill.description}</p>
                   </button>
               ))}
            </div>
